@@ -2,8 +2,10 @@ package com.diabin.festec.example;
 
 
 import android.app.Application;
+import android.support.annotation.Nullable;
 
 import com.diabin.latte.app.Latte;
+import com.diabin.latte.app.net.interceptors.DebugInterceptor;
 import com.diabin.latte.ec.icon.FontEcModule;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -28,7 +30,13 @@ public class ExampleApp extends Application {
     }
 
     private void initProjectConfig() {
-        Latte.init(this).withIcon(new FontAwesomeModule()).withIcon(new FontEcModule()).withApiHost("http://127.0.0.1/").configure();
+        Latte.init(this)
+                .withIcon(new FontAwesomeModule())
+                .withIcon(new FontEcModule())
+                .withLoaderDelayed(1000)
+                .withApiHost("http://10.0.2.2/")
+                .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .configure();
     }
 
     private void initFragmentationConfig() {
@@ -36,13 +44,13 @@ public class ExampleApp extends Application {
                 // 设置 栈视图 模式为 （默认）悬浮球模式   SHAKE: 摇一摇唤出  NONE：隐藏， 仅在Debug环境生效
                 .stackViewMode(Fragmentation.BUBBLE)
                 .debug(true) // 实际场景建议.debug(BuildConfig.DEBUG)
-                /**
-                 * 可以获取到{@link me.yokeyword.fragmentation.exception.AfterSaveStateTransactionWarning}
-                 * 在遇到After onSaveInstanceState时，不会抛出异常，会回调到下面的ExceptionHandler
+                /*
+                  可以获取到{@link me.yokeyword.fragmentation.exception.AfterSaveStateTransactionWarning}
+                  在遇到After onSaveInstanceState时，不会抛出异常，会回调到下面的ExceptionHandler
                  */
                 .handleException(new ExceptionHandler() {
                     @Override
-                    public void onException(Exception e) {
+                    public void onException(@Nullable Exception e) {
                         // 以Bugtags为例子: 把捕获到的 Exception 传到 Bugtags 后台。
                         // Bugtags.sendException(e);
                     }

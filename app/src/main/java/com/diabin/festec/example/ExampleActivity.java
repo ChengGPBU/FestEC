@@ -2,10 +2,7 @@ package com.diabin.festec.example;
 
 
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
 
 import com.diabin.latte.app.activitys.ProxyActivity;
@@ -25,4 +22,6 @@ public class ExampleActivity extends ProxyActivity {
         Log.e("ProxyActivity","setRootDelegate");
         return new ExampleDelegate();
     }
+
+
 }

@@ -11,4 +11,6 @@ public enum ConfigType {
     APPLICATION_CONTEXT, // 全局Context
     CONFIG_READY, //配置是否完成
     ICON, //
+    LOADER_DELAYED,
+    INTERCEPTOR,//拦截器 集合
 }

@@ -2,6 +2,8 @@ package com.diabin.latte.app.net.callback;
 
 import android.os.Handler;
 
+import com.diabin.latte.app.ConfigType;
+import com.diabin.latte.app.Latte;
 import com.diabin.latte.app.ui.loader.LatteLoader;
 import com.diabin.latte.app.ui.loader.LoaderStyle;
 
@@ -58,6 +60,7 @@ public class RequestCallBacks implements Callback<String> {
             if(iRequest != null) {
                iRequest.onRequestEnd();
             }
+        stopLoading();
     }
 
 
@@ -68,7 +71,7 @@ public class RequestCallBacks implements Callback<String> {
                 public void run() {
                     LatteLoader.stopLoading();
                 }
-            },1000);
+            }, (Long) Latte.getConfiguration(ConfigType.LOADER_DELAYED));
         }
     }
 
