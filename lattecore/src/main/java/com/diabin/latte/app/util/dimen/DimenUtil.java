@@ -1,4 +1,4 @@
-package com.diabin.latte.app.util;
+package com.diabin.latte.app.util.dimen;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;

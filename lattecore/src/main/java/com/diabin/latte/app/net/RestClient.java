@@ -7,6 +7,7 @@ import com.diabin.latte.app.net.callback.IFailure;
 import com.diabin.latte.app.net.callback.IRequest;
 import com.diabin.latte.app.net.callback.ISuccess;
 import com.diabin.latte.app.net.callback.RequestCallBacks;
+import com.diabin.latte.app.net.download.DownloadHandler;
 import com.diabin.latte.app.ui.loader.LatteLoader;
 import com.diabin.latte.app.ui.loader.LoaderStyle;
 
@@ -29,19 +30,25 @@ import retrofit2.Callback;
 public class RestClient {
     // builder之后不允许改变值  所以使用final修饰
     private final String url;
-    private static final WeakHashMap<String,Object> params = RestCreator.getParams();
+    private static final WeakHashMap<String, Object> params = RestCreator.getParams();
     private final IRequest iRequest;
     private final ISuccess iSuccess;
     private final IFailure iFailure;
+    private final String download_dir; // 文件下载目录
+    private final String extension;  // 文件拓展
+    private final String name; // 文件名称
     private final IError iError;
     private final RequestBody body;
     private final LoaderStyle loaderStyle;
     private final Context context;
-    private final File file;
+    private final File file; // 上传文件
 
 
     public RestClient(String url,
-                     Map<String,Object> params,
+                      Map<String, Object> params,
+                      String downloadDir,
+                      String extension,
+                      String name,
                       IRequest iRequest,
                       ISuccess iSuccess,
                       IFailure iFailure,
@@ -60,6 +67,9 @@ public class RestClient {
         this.file = file;
         this.context = context;
         this.loaderStyle = loaderStyle;
+        this.download_dir = downloadDir;
+        this.extension = extension;
+        this.name = name;
     }
 
 
@@ -71,46 +81,46 @@ public class RestClient {
     private void request(HttpMethod method) {
         final RestService service = RestCreator.getRestService();
         Call<String> call = null;
-        if(iRequest !=null ) {
+        if (iRequest != null) {
             iRequest.onRequestStart();
         }
 
-        if(loaderStyle != null) {
-            LatteLoader.showLoading(context,loaderStyle);
+        if (loaderStyle != null) {
+            LatteLoader.showLoading(context, loaderStyle);
         }
 
         switch (method) {
             case GET:
-                call = service.get(url,params);
+                call = service.get(url, params);
                 break;
             case POST:
-                call = service.post(url,params);
+                call = service.post(url, params);
                 break;
 
             case POST_RAW:
-                call = service.postRaw(url,body);
+                call = service.postRaw(url, body);
                 break;
             case PUT:
-                call = service.put(url,params);
+                call = service.put(url, params);
                 break;
             case PUT_RAW:
-                call = service.putRaw(url,body);
+                call = service.putRaw(url, body);
                 break;
             case DELETE:
-                call = service.delete(url,params);
+                call = service.delete(url, params);
                 break;
 
-            case  UPLOAD:
-                final  RequestBody requestBody = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()),file);
-                final  MultipartBody.Part body = MultipartBody.Part.createFormData("file",file.getName(),requestBody);
+            case UPLOAD:
+                final RequestBody requestBody = RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), file);
+                final MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
 
-                call = service.upload(url,body);
+                call = service.upload(url, body);
                 break;
             default:
                 break;
         }
 
-        if(call != null) {
+        if (call != null) {
             call.enqueue(getRequestCallback());
         }
 
@@ -118,20 +128,20 @@ public class RestClient {
 
 
     private Callback<String> getRequestCallback() {
-        return new RequestCallBacks( iRequest,  iSuccess,  iFailure,  iError, loaderStyle);
+        return new RequestCallBacks(iRequest, iSuccess, iFailure, iError, loaderStyle);
     }
 
 
-    public final  void get() {
+    public final void get() {
         request(HttpMethod.GET);
     }
 
 
-    public final  void post() {
-        if(body == null){
+    public final void post() {
+        if (body == null) {
             request(HttpMethod.POST);
-        }else {
-            if(!params.isEmpty()) {
+        } else {
+            if (!params.isEmpty()) {
                 throw new RuntimeException("params must be null!");
             }
             request(HttpMethod.POST_RAW);
@@ -140,11 +150,11 @@ public class RestClient {
     }
 
 
-    public final  void put() {
-        if(body == null){
+    public final void put() {
+        if (body == null) {
             request(HttpMethod.PUT);
-        }else {
-            if(!params.isEmpty()) {
+        } else {
+            if (!params.isEmpty()) {
                 throw new RuntimeException("params must be null!");
             }
             request(HttpMethod.PUT_RAW);
@@ -153,8 +163,17 @@ public class RestClient {
     }
 
 
-    public final  void delete() {
+    public final void delete() {
         request(HttpMethod.DELETE);
+    }
+
+
+    public final void upload() {
+        request(HttpMethod.UPLOAD);
+    }
+
+    public final void download() {
+        new DownloadHandler(url, iRequest, iSuccess, iFailure, download_dir, extension, name, iError).handlerDownload();
     }
 
 }
