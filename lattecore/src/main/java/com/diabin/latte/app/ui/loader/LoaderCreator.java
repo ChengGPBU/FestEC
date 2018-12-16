@@ -37,7 +37,11 @@ public final class LoaderCreator {
         return avLoadingIndicatorView;
     }
 
-
+    /**
+     * 通过反射 创建对象实体
+     * @param name
+     * @return
+     */
     private static Indicator getIndicator(String name) {
         if (TextUtils.isEmpty(name)){
             return null;
