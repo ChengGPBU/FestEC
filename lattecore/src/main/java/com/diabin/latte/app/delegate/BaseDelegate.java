@@ -1,10 +1,13 @@
 package com.diabin.latte.app.delegate;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.diabin.latte.app.activitys.ProxyActivity;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -23,8 +26,15 @@ public abstract class BaseDelegate extends SwipeBackFragment {
     // 子类 传入view
     public abstract Object setLayout();
 
+
+    // 当视图创建 并绑定之后 子类 执行该方法
     public abstract void onBindView(@Nullable Bundle savedInstanceState,View rootView);
 
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
 
     @Nullable
     @Override
@@ -45,6 +55,11 @@ public abstract class BaseDelegate extends SwipeBackFragment {
             onBindView(savedInstanceState,rootView);
         }
         return rootView;
+    }
+    
+    
+    public final ProxyActivity getProxyActivity() {
+        return (ProxyActivity) _mActivity;
     }
 
 
