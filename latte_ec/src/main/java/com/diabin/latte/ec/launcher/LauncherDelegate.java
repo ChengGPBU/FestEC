@@ -5,6 +5,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import com.diabin.latte.app.delegate.LatteDelegate;
+import com.diabin.latte.app.ui.launcher.ScrollLauncherTag;
+import com.diabin.latte.app.util.storage.LattePreference;
 import com.diabin.latte.app.util.timer.BaseTimerTask;
 import com.diabin.latte.app.util.timer.ITimerListener;
 import com.diabin.latte.ec.R;
@@ -21,7 +23,7 @@ import butterknife.OnClick;
  * package: com.diabin.latte.ec.launcher
  * author: chengguang
  * created on: 2018/12/17 上午9:31
- * description: 启动图 倒计时功能
+ * description: 开启app的时候 启动 倒计时功能
  */
 public class LauncherDelegate extends LatteDelegate implements ITimerListener {
     private Timer mTimer = null;
@@ -34,7 +36,11 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener {
 
     @OnClick(R2.id.tv_launcher_timer)
     void onClickTimerView() {
-
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+            checkIsShowScroll();
+        }
     }
 
 
@@ -57,6 +63,18 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener {
         initTimer();
     }
 
+    /**
+     * 判断是否展示滑动启动页
+     */
+    private void checkIsShowScroll() {
+      if(!LattePreference.getAppFlag(ScrollLauncherTag.HAS_FIRST_LAUNCHER_APP.name())) {
+          start(new LauncherScrollDelegate(),SINGLETASK);
+      }else{
+          // 检查用户是否登录了App
+      }
+    }
+
+
 
     @Override
     public void onTimer() {
@@ -70,6 +88,7 @@ public class LauncherDelegate extends LatteDelegate implements ITimerListener {
                         if(mTimer != null) {
                             mTimer.cancel();
                             mTimer = null;
+                            checkIsShowScroll();
                         }
                     }
                 }

@@ -1,0 +1,11 @@
+{
+  "code":0,
+  "message":"OK",
+  "data":{
+    "userId":1,
+    "name":"程广",
+    "avatar":"http",
+    "gender":"男",
+    "address":"广东深圳"
+  }
+}

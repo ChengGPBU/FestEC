@@ -38,16 +38,16 @@ public class ExampleDelegate extends LatteDelegate {
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
         // 视图绑定之后的操作
-//        testRestClient();
+        testRestClient();
 
 
-        onCallRxRestClient();
+//        onCallRxRestClient();
     }
 
     private void testRestClient() {
         RestClient.builder()
                 //.url("http://news.baidu.com/")
-                .url("http://10.0.2.2:8080/index/")
+                .url("http://10.0.2.2:8080/latte/user.json")
                 .loader(getContext())
                 .success(new ISuccess() {
                     @Override
