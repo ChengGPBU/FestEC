@@ -1,6 +1,14 @@
 package com.diabin.latte.app.util.log;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.LogStrategy;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 /**
  * package: com.diabin.latte.app.util.log
@@ -18,6 +26,19 @@ public class LatteLogger {
 
     //控制log等级
     private static int LEVEL = VERBOSE;
+
+    public static void initLogger() {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+                .methodCount(2)         // (Optional) How many method line to show. Default 2
+                .methodOffset(7)        // (Optional) Hides internal method calls up to offset. Default 5
+                .logStrategy(new LogCatStrategy()) // (Optional) Changes the log strategy to print out. Default LogCat
+                .tag("chengguang")   // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+    }
+
+
 
     public static void v(String tag, String message) {
         if (LEVEL <= VERBOSE) {

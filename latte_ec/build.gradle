@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'//加入其插件作用是生存R2文件，用来生成视图绑定所需要的id
+apply plugin: 'org.greenrobot.greendao'
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -27,9 +29,20 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
     compile project(':lattecore')
+
     //ButterKnife 依赖
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //数据库依赖
+    compile 'org.greenrobot:greendao-generator:3.2.2'
+    compile 'org.greenrobot:greendao:3.2.2'
+    // greendao cipher
+    compile 'net.zetetic:android-database-sqlcipher:3.5.7'
+
+    //FastJson（比 Gson 快）
+    compile 'com.alibaba:fastjson:1.2.44'
 
 }

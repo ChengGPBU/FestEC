@@ -6,7 +6,12 @@ import android.support.annotation.Nullable;
 
 import com.diabin.latte.app.Latte;
 import com.diabin.latte.app.net.interceptors.DebugInterceptor;
+import com.diabin.latte.app.util.log.LatteLogger;
+import com.diabin.latte.ec.database.DatabaseManager;
 import com.diabin.latte.ec.icon.FontEcModule;
+import com.facebook.stetho.DumperPluginsProvider;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.dumpapp.DumperPlugin;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import me.yokeyword.fragmentation.Fragmentation;
@@ -26,6 +31,18 @@ public class ExampleApp extends Application {
 
         initProjectConfig();
         initFragmentationConfig();
+
+
+        DatabaseManager.getInstance().init(this);
+
+        // 初始化日志配置
+        LatteLogger.initLogger();
+
+        // 数据库工具查看 facebook
+        Stetho.initialize(Stetho.newInitializerBuilder(this)
+                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                .build());
 
     }
 
