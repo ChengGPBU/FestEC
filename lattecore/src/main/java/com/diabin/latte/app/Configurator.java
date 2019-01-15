@@ -1,6 +1,8 @@
 package com.diabin.latte.app;
 
 
+import android.app.Activity;
+
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 
@@ -91,6 +93,23 @@ public class Configurator {
         return this;
     }
 
+
+    public final Configurator withWeChatAppId(String appId){
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_ID, appId);
+        return this;
+    }
+
+    public final Configurator withWeChatAppSecret(String appSecret){
+        LATTE_CONFIGS.put(ConfigType.WE_CHAT_APP_SECRET, appSecret);
+        return this;
+    }
+
+
+
+    public final Configurator withActivity(Activity activity){
+        LATTE_CONFIGS.put(ConfigType.ACTIVITY, activity);
+        return this;
+    }
 
     private void checkConfiguration() {
         // 使用 final 保证 变量不被修改

@@ -55,8 +55,8 @@ dependencies {
 
 
     //ButterKnife 依赖
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.jakewharton:butterknife:9.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
 
 
     //网络请求依赖
@@ -89,5 +89,9 @@ dependencies {
     // greendao cipher
     compile 'net.zetetic:android-database-sqlcipher:3.5.7'
 
+
+    // 微信依赖 包含统计
+    // noinspection GradleDynamicVersion
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
 }

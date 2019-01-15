@@ -25,6 +25,14 @@ public final class Latte {
     }
 
     /**
+     * 获取Configurator 单例对象
+     * @return
+     */
+    public static Configurator getConfigurator() {
+        return Configurator.getInstance();
+    }
+
+    /**
      * 获取所有的配置信息
      * @return
      */

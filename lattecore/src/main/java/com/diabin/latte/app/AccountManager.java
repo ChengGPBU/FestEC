@@ -10,7 +10,7 @@ import com.diabin.latte.app.util.storage.LattePreference;
  */
 public class AccountManager {
 
-    // 登陆标识
+    // 登录 注册标识
     private enum SignTag{
         SIGN_TAG
     }

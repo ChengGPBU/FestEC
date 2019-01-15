@@ -68,7 +68,6 @@ public class SignUpDelegate extends LatteDelegate {
                             LatteLogger.json("USER_PROFILE", response);
                             //将用户数据持久化写进数据库
                             SignHandler.onSignUp(response, mISignListener);
-                            Toast.makeText(getContext(), "注册成功", Toast.LENGTH_LONG).show();
                         }
                     })
                     .build()

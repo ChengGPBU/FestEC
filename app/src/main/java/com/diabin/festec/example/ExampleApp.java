@@ -53,6 +53,8 @@ public class ExampleApp extends Application {
                 .withLoaderDelayed(1000)
                 .withApiHost("http://10.0.2.2/")
                 .withInterceptor(new DebugInterceptor("index",R.raw.test))
+                .withWeChatAppId("")
+                .withWeChatAppSecret("")
                 .configure();
     }
 

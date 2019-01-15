@@ -1,5 +1,6 @@
 package com.diabin.latte.ec.login;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -9,6 +10,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.diabin.latte.app.delegate.LatteDelegate;
+import com.diabin.latte.app.net.RestClient;
+import com.diabin.latte.app.net.callback.ISuccess;
+import com.diabin.latte.app.util.log.LatteLogger;
+import com.diabin.latte.app.wechat.LatteWeChat;
+import com.diabin.latte.app.wechat.callbacks.IWeChatSignInCallback;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
 
@@ -28,22 +34,37 @@ public class SignInDelegate extends LatteDelegate {
     TextInputEditText mPwd = null;
 
 
+    private ISignListener mISignListener = null;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISignListener) {
+            mISignListener = (ISignListener) activity;
+        }
+    }
+
+
     @OnClick(R2.id.btn_sign_in)
     void onClickSignIn() {
-        if(chechForm()) {
-//            RestClient.builder()
-//                    .url("sign_")
-//                    .params("","")
-//                    .success(new ISuccess() {
-//                        @Override
-//                        public void onSuccess(String response) {
-//
-//                        }
-//                    })
-//                    .build()
-//                    .post();
+        if (chechForm()) {
+            RestClient.builder()
+                    .url("http://10.0.2.2:8080/latte/user.json")
+                    .params("email", mEmail.getText().toString())
+                    .params("password", mPwd.getText().toString())
+                    .success(new ISuccess() {
+                        @Override
+                        public void onSuccess(String response) {
+                            // 日志打印
+                            LatteLogger.json("USER_PROFILE", response);
+                            //将用户数据持久化写进数据库
+                            SignHandler.onSignIn(response, mISignListener);
+                        }
+                    })
+                    .build()
+                    .post();
 
-            Toast.makeText(getContext(),"登录成功",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "登录成功", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -51,7 +72,13 @@ public class SignInDelegate extends LatteDelegate {
 
     @OnClick(R2.id.icon_sign_in_wechat)
     void onClickWeChat() {
-        Toast.makeText(getContext(),"wechat登录",Toast.LENGTH_LONG).show();
+        // 传入监听
+        LatteWeChat.getInstance().onSignInSuccess(new IWeChatSignInCallback() {
+            @Override
+            public void onSignInSuccess(String userInfo) {
+                Toast.makeText(getContext(), "wechat登录", Toast.LENGTH_LONG).show();
+            }
+        }).signIn();
     }
 
 
@@ -62,9 +89,6 @@ public class SignInDelegate extends LatteDelegate {
     }
 
 
-
-
-
     private boolean chechForm() {
         final String email = mEmail.getText().toString();
         final String pwd = mPwd.getText().toString();
@@ -72,27 +96,25 @@ public class SignInDelegate extends LatteDelegate {
 
         boolean isPass = true;
 
-        if(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmail.setError("错误的邮箱格式");
             isPass = false;
-        }else {
+        } else {
             mEmail.setError(null);
         }
 
 
-        if(pwd.isEmpty()||pwd.length() <6) {
+        if (pwd.isEmpty() || pwd.length() < 6) {
             mPwd.setError("请填写至少6位数密码");
             isPass = false;
-        }else {
+        } else {
             mPwd.setError(null);
         }
-
 
 
         return isPass;
 
     }
-
 
 
     @Override

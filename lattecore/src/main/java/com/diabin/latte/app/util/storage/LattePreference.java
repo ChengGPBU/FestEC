@@ -34,6 +34,8 @@ public final class LattePreference {
                 .edit()
                 .putString(APP_PREFERENCES_KEY, val)
                 .apply();
+
+
     }
 
     public static String getAppProfile() {
