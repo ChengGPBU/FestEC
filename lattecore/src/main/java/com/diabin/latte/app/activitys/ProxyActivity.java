@@ -16,7 +16,7 @@ import me.yokeyword.fragmentation.SupportActivity;
  * package: com.diabin.latte.app.activitys
  * author: chengguang
  * created on: 2018/12/8 上午9:58
- * description: 全局代理Activity
+ * description: 全局代理Activitya
  */
 public abstract class ProxyActivity extends SupportActivity {
 

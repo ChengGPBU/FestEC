@@ -52,9 +52,9 @@ public class ExampleApp extends Application {
                 .withIcon(new FontEcModule())
                 .withLoaderDelayed(1000)
                 .withApiHost("http://10.0.2.2/")
-                .withInterceptor(new DebugInterceptor("index",R.raw.test))
-                .withWeChatAppId("")
-                .withWeChatAppSecret("")
+                .withInterceptor(new DebugInterceptor("xxxx",R.raw.test))
+                .withWeChatAppId("wx0bac1cd4d6130215")
+                .withWeChatAppSecret("95236aee3b49287a05202b5a43398de5")
                 .configure();
     }
 

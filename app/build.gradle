@@ -9,20 +9,36 @@ android {
 
     defaultConfig {
         applicationId "com.diabin.festec.example"
+//        applicationId "com.heyteago"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("./ss.jks")
+            storePassword "Heyteago"
+            keyAlias "Heyteago"
+            keyPassword "Heyteago"
+        }
+
+    }
+
+
+
+
     buildTypes {
 
         debug{
-
+            signingConfig signingConfigs.release
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

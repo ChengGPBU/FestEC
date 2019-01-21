@@ -9,8 +9,8 @@ import com.joanzapata.iconify.Icon;
  * description:
  */
 public enum EcIcons implements Icon {
-    icon_scan('\ue62f'),
-    icon_ali_pay('\ue64b');
+    icon_scan('\ue609'),
+    icon_ali_pay('\ue602');
 
     //一个返回变量
     private char character;

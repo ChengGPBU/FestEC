@@ -1,5 +1,7 @@
 package com.diabin.latte.app.wechat;
 
+import android.widget.Toast;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.diabin.latte.app.net.RestClient;
@@ -23,6 +25,10 @@ public abstract class BaseWXEntryActivity extends BaseWXActivity  {
     //用户登录成功后回调
     protected abstract void onSignInSuccess(String userInfo);
 
+
+    //用户登录失败后回调
+//    protected abstract void onSignInFail();
+
     //微信发送请求到第三方应用后的回调
     @Override
     public void onReq(BaseReq baseReq) {
@@ -32,6 +38,7 @@ public abstract class BaseWXEntryActivity extends BaseWXActivity  {
     @Override
     public void onResp(BaseResp baseResp) {
         final String code = ((SendAuth.Resp) baseResp).code;
+        Toast.makeText(this,code,Toast.LENGTH_LONG).show();
         final StringBuilder authUrl = new StringBuilder();
         authUrl.append("https://api.weixin.qq.com/sns/oauth2/access_token?appid=")
                 .append(LatteWeChat.APP_ID)
@@ -67,6 +74,12 @@ public abstract class BaseWXEntryActivity extends BaseWXActivity  {
                                 .append("zh_CN");
                         LatteLogger.d("authUrl", userInfoUrl.toString());
                         getUserInfo(userInfoUrl.toString());
+                    }
+                })
+                .failure(new IFailure() {
+                    @Override
+                    public void onFailure() {
+//                        onSignInFail();
                     }
                 })
                 .build()

@@ -2,6 +2,7 @@ package com.diabin.latte.app;
 
 
 import android.app.Activity;
+import android.os.Handler;
 
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
@@ -23,6 +24,9 @@ public class Configurator {
     private static final HashMap<Object, Object> LATTE_CONFIGS = new HashMap<>();
     private static final ArrayList<IconFontDescriptor> ICONS = new ArrayList<>();
 
+    private static final Handler HANDLER = new Handler();
+
+
     //拦截器集合
     private static final ArrayList<Interceptor> INTERCEPTORS = new ArrayList<>();
 
@@ -30,6 +34,7 @@ public class Configurator {
     //构造函数私有 外部无法直接new 需要通过该类内部获取实例
     private Configurator() {
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY, false);
+        LATTE_CONFIGS.put(ConfigType.HANDLER, HANDLER);
     }
 
     // 单例模式

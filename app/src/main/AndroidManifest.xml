@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config"
         >
         <activity android:name=".ExampleActivity">
             <intent-filter>
@@ -22,7 +23,7 @@
         </activity>
 
 
-        <activity android:name=".wxapi.WXEntryActivity"
+        <activity android:name="com.heyteago.wxapi.WXEntryActivity"
             android:exported="true"
             android:label="微信回调"
             android:screenOrientation="portrait"

@@ -8,4 +8,6 @@ package com.diabin.latte.app.wechat.callbacks;
  */
 public interface IWeChatSignInCallback {
     void onSignInSuccess(String userInfo);
+
+//    void onSignInFail();
 }

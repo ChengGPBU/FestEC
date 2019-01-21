@@ -15,6 +15,7 @@ public enum ConfigType {
     INTERCEPTOR,//拦截器 集合
     WE_CHAT_APP_ID,
     WE_CHAT_APP_SECRET,
-    ACTIVITY,
+    ACTIVITY, // 主activity
+    HANDLER,
 
 }

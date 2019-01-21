@@ -17,6 +17,7 @@ import com.diabin.latte.ec.launcher.LauncherScrollDelegate;
 import com.diabin.latte.ec.login.ISignListener;
 import com.diabin.latte.ec.login.SignInDelegate;
 import com.diabin.latte.ec.login.SignUpDelegate;
+import com.diabin.latte.ec.main.EcBottomDelegate;
 
 
 /**
@@ -43,11 +44,13 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         // 测试页
 //        return new ExampleDelegate();
         // 启动页
-        return new LauncherDelegate();
+//        return new LauncherDelegate();
         // 注册页
 //        return new SignUpDelegate();
         // 登录页
 //        return new SignInDelegate();
+        // 电商首页
+        return new EcBottomDelegate();
     }
 
 
