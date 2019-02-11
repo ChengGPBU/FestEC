@@ -4,15 +4,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.diabin.latte.app.delegate.bottom.BottomItemDelegate;
+import com.diabin.latte.app.net.RestClient;
+import com.diabin.latte.app.net.callback.IFailure;
+import com.diabin.latte.app.net.callback.ISuccess;
+import com.diabin.latte.app.ui.recycler.MultipleFields;
+import com.diabin.latte.app.ui.recycler.MultipleItemEntity;
 import com.diabin.latte.app.ui.refresh.RefreshHandler;
+import com.diabin.latte.app.util.log.LatteLogger;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
 import com.joanzapata.iconify.widget.IconTextView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -41,8 +51,6 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
     private RefreshHandler mRefreshHandler = null;
 
 
-
-
     // 初始化 刷新样式
     private void initRefreshLayout() {
         mRefreshLayout.setColorSchemeResources(
@@ -54,6 +62,13 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
         mRefreshLayout.setProgressViewOffset(true, 120, 300);
     }
 
+
+    //初始化列表
+    private void initRecylerView() {
+       final GridLayoutManager manager = new GridLayoutManager(getContext(),4);
+       mRecyclerView.setLayoutManager(manager);
+    }
+
     @Override
     public Object setLayout() {
         return R.layout.delegate_index;
@@ -61,15 +76,16 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, View rootView) {
-        mRefreshHandler = new RefreshHandler(mRefreshLayout);
+        // 创建 刷新帮助类
+        mRefreshHandler = RefreshHandler.create(mRefreshLayout,mRecyclerView,new IndexDataConvert());
     }
-
 
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         initRefreshLayout();
+        initRecylerView();
         mRefreshHandler.firstPage("http://10.0.2.2:8080/latte/index.json");
     }
 

@@ -97,5 +97,12 @@ dependencies {
 
     //BaseRecyclerViewAdapterHelper依赖
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    //RecyclerView 分隔线
+    compile 'com.choices.divider:RecyclerView_Divider:1.0.0'
+
+
+    //图片处理(必须依赖  v4包)
+    compile 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
 }
