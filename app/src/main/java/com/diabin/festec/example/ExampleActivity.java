@@ -18,6 +18,9 @@ import com.diabin.latte.ec.login.ISignListener;
 import com.diabin.latte.ec.login.SignInDelegate;
 import com.diabin.latte.ec.login.SignUpDelegate;
 import com.diabin.latte.ec.main.EcBottomDelegate;
+import com.diabin.latte.ec.test.NestDelegate;
+
+import qiu.niorgai.StatusBarCompat;
 
 
 /**
@@ -36,6 +39,9 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
 
         Latte.getConfigurator().withActivity(this);
 
+        //translucent status bar
+        StatusBarCompat.translucentStatusBar(this, true);
+
     }
 
     @Override
@@ -51,6 +57,9 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
 //        return new SignInDelegate();
         // 电商首页
         return new EcBottomDelegate();
+
+        // 测试Behavior
+//        return new NestDelegate();
     }
 
 

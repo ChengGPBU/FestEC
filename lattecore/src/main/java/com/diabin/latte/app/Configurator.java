@@ -4,6 +4,7 @@ package com.diabin.latte.app;
 import android.app.Activity;
 import android.os.Handler;
 
+import com.diabin.latte.app.util.log.LatteLogger;
 import com.joanzapata.iconify.IconFontDescriptor;
 import com.joanzapata.iconify.Iconify;
 
@@ -56,6 +57,8 @@ public class Configurator {
     public final void configure() {
         //初始化字体
         initIcons();
+        // 初始化日志配置
+        LatteLogger.initLogger();
         LATTE_CONFIGS.put(ConfigType.CONFIG_READY, true);
     }
 

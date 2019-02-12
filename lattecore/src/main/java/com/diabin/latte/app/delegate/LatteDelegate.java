@@ -7,4 +7,9 @@ package com.diabin.latte.app.delegate;
  * description:
  */
 public abstract class LatteDelegate extends PermissionCheckerDelegate {
+
+    @SuppressWarnings("unchecked")
+    public <T extends LatteDelegate> T getParentDelegate() {
+        return (T) getParentFragment();
+    }
 }

@@ -2,6 +2,7 @@ package com.diabin.latte.ec.main.index;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,12 +15,14 @@ import com.diabin.latte.app.delegate.bottom.BottomItemDelegate;
 import com.diabin.latte.app.net.RestClient;
 import com.diabin.latte.app.net.callback.IFailure;
 import com.diabin.latte.app.net.callback.ISuccess;
+import com.diabin.latte.app.ui.recycler.BaseDecoration;
 import com.diabin.latte.app.ui.recycler.MultipleFields;
 import com.diabin.latte.app.ui.recycler.MultipleItemEntity;
 import com.diabin.latte.app.ui.refresh.RefreshHandler;
 import com.diabin.latte.app.util.log.LatteLogger;
 import com.diabin.latte.ec.R;
 import com.diabin.latte.ec.R2;
+import com.diabin.latte.ec.main.EcBottomDelegate;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -67,6 +70,12 @@ public class IndexDelegate extends BottomItemDelegate implements View.OnFocusCha
     private void initRecylerView() {
        final GridLayoutManager manager = new GridLayoutManager(getContext(),4);
        mRecyclerView.setLayoutManager(manager);
+       // 设置分割线
+       mRecyclerView.addItemDecoration(BaseDecoration.create(ContextCompat.getColor(getContext(),R.color.app_background),5));
+       // 获取父级容器
+       final EcBottomDelegate ecBottomDelegate = getParentDelegate();
+       mRecyclerView.addOnItemTouchListener(IndexItemClickListener.create(ecBottomDelegate));
+
     }
 
     @Override

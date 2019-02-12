@@ -76,6 +76,8 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener , Ba
                         RECYCLER_VIEW.setAdapter(mAdapter);
                         // 自加 1
                         BEAN.addIndex();
+                        //累加数量
+                        BEAN.setCurrentCount(mAdapter.getData().size());
                     }
                 })
                 .failure(new IFailure() {
@@ -85,6 +87,42 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener , Ba
                 })
                 .build()
                 .post();
+    }
+
+
+    // 分页加载
+    private void paging() {
+        final int pageSize = BEAN.getPageSize();
+        final int currentCount = BEAN.getCurrentCount();
+        final int total = BEAN.getTotal();
+        final int index = BEAN.getPageIndex();
+
+        if(mAdapter.getData().size() < pageSize || currentCount >= total) {
+            mAdapter.loadMoreEnd(true);
+        }else {
+            Latte.getHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    RestClient.builder()
+                            .url("http://10.0.2.2:8080/latte/index.json")
+                            .success(new ISuccess() {
+                                @Override
+                                public void onSuccess(String response) {
+                                    mAdapter.addData(CONVERTER.setJsonData(response).convert());
+                                    //累加数量
+                                    BEAN.setCurrentCount(mAdapter.getData().size());
+                                    mAdapter.loadMoreComplete();
+                                    BEAN.addIndex();
+                                }
+                            })
+                            .build()
+                            .post();
+                }
+            },1000);
+        }
+
+
+
     }
 
     @Override
@@ -97,6 +135,6 @@ public class RefreshHandler implements SwipeRefreshLayout.OnRefreshListener , Ba
     // 加载更多
     @Override
     public void onLoadMoreRequested() {
-
+        paging();
     }
 }
