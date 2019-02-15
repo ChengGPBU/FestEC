@@ -72,7 +72,7 @@ dependencies {
     //Banner依赖 轮播
     compile 'com.bigkoo:convenientbanner:2.0.5'
     //FastJson（比 Gson 快）
-    compile 'com.alibaba:fastjson:1.2.44'
+    compile 'com.alibaba:fastjson:1.1.70.android'
 
     //Log
     compile 'com.orhanobut:logger:2.2.0'
@@ -104,5 +104,7 @@ dependencies {
     //Google AutoValue
     provided "com.google.auto.value:auto-value-annotations:1.6.2"
     annotationProcessor "com.google.auto.value:auto-value:1.6.2"
+
+
 
 }

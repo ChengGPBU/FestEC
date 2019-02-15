@@ -43,6 +43,6 @@ dependencies {
     compile 'net.zetetic:android-database-sqlcipher:3.5.7'
 
     //FastJson（比 Gson 快）
-    compile 'com.alibaba:fastjson:1.2.44'
+    compile 'com.alibaba:fastjson:1.1.70.android'
 
 }

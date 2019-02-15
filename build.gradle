@@ -17,6 +17,8 @@ buildscript {
         classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0'
         // 数据库插件
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        // 腾讯热修复插件
+//        classpath "com.tencent.tinker:tinker-patch-gradle-plugin:1.9.1"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -50,4 +52,7 @@ ext {
     targetSdkVersion = 28
     supportLibVersion = "28.0.0"
 }
+
+
+
 

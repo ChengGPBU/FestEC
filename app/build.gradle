@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'org.greenrobot.greendao'
+//apply plugin: 'com.tencent.tinker.patch'
+
 
 
 android {
@@ -77,7 +79,11 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
-
-
-
+////optional, help to generate the final application
+//    provided('com.tencent.tinker:tinker-android-anno:1.9.1')
+//    //tinker's main Android lib
+//    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
 }
+
+
+
