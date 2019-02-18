@@ -13,12 +13,4 @@ public abstract class LatteDelegate extends PermissionCheckerDelegate {
         return (T) getParentFragment();
     }
 
-
-    @SuppressWarnings("unchecked")
-    public <T extends LatteDelegate> T getTopDelegate() {
-        return (T) getTopFragment();
-    }
-
-
-
 }

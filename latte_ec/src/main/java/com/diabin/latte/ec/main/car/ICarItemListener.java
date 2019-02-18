@@ -7,5 +7,7 @@ package com.diabin.latte.ec.main.car;
  * description:
  */
 public interface ICarItemListener {
+
+    // item 被操作之后  传入总价
     void onItemClick(double itemTotalPrice);
 }

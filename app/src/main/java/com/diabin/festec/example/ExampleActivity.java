@@ -78,14 +78,24 @@ public class ExampleActivity extends ProxyActivity implements ISignListener, ILa
         switch (tag) {
             case SIGNED:
                 Toast.makeText(this, "启动结束，用户已登录", Toast.LENGTH_LONG).show();
-                startWithPop(new ExampleDelegate());
+                getSupportDelegate().startWithPop(new ExampleDelegate());
                 break;
             case NOT_SIGNED:
                 Toast.makeText(this, "启动结束，用户未登录", Toast.LENGTH_LONG).show();
-                startWithPop(new SignInDelegate());
+                getSupportDelegate().startWithPop(new SignInDelegate());
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void post(Runnable runnable) {
+
+    }
+
+    @Override
+    public void onBackPressedSupport() {
+
     }
 }

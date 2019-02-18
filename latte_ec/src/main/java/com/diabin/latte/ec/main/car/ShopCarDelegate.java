@@ -34,11 +34,12 @@ import butterknife.OnClick;
  * created on: 2019/2/14 上午9:04
  * description:
  */
-public class ShopCarDelegate extends BottomItemDelegate implements ISuccess {
+public class ShopCarDelegate extends BottomItemDelegate implements ISuccess,ICarItemListener {
     private ShopCarAdapter mAdapter = null;
     //列表中当前剩余item数
     private int mCurrentCount = 0;
     private int mTotalCount = 0;
+    private double mTotalPrice = 0.00;
 
 
     @BindView(R2.id.rv_shop_car)
@@ -163,11 +164,20 @@ public class ShopCarDelegate extends BottomItemDelegate implements ISuccess {
         LatteLogger.d("购物车数据", response);
         final ArrayList<MultipleItemEntity> data = new ShopCarDataConverter().setJsonData(response).convert();
         mAdapter = new ShopCarAdapter(data);
+        mAdapter.setICarItemListener(this);
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(manager);
         mRecyclerView.setAdapter(mAdapter);
         // 初始化时的 总个数
         mTotalCount = mAdapter.getItemCount();
+        mTotalPrice = mAdapter.getTotalPrice();
+        mTvTotalPrice.setText(String.valueOf(mTotalPrice));
         checkItemCount();
+    }
+
+    @Override
+    public void onItemClick(double itemTotalPrice) {
+        final double price = mAdapter.getTotalPrice();
+        mTvTotalPrice.setText(String.valueOf(price));
     }
 }

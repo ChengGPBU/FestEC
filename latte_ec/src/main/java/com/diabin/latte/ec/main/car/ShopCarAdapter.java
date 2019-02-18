@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.diabin.latte.app.Latte;
+import com.diabin.latte.app.net.RestClient;
+import com.diabin.latte.app.net.callback.ISuccess;
 import com.diabin.latte.app.ui.recycler.ItemType;
 import com.diabin.latte.app.ui.recycler.MultipleFields;
 import com.diabin.latte.app.ui.recycler.MultipleItemEntity;
@@ -30,7 +32,7 @@ public class ShopCarAdapter extends MultipleRecyclerAdapter {
 
     private boolean mIsSelectedAll = false;
     private ICarItemListener mICarItemListener = null;
-    private double mTotalPrice = 0.00;
+    private double mTotalPrice = 0.00;// 商品总价
 
     //设置图片加载策略
     private static final RequestOptions REQUEST_OPTIONS =
@@ -48,6 +50,14 @@ public class ShopCarAdapter extends MultipleRecyclerAdapter {
      */
     protected ShopCarAdapter(List<MultipleItemEntity> data) {
         super(data);
+
+        //初始化总价
+        for (MultipleItemEntity entity : data) {
+            final double price = entity.getField(ShopCarItemFields.PRICE);
+            final int count = entity.getField(ShopCarItemFields.COUNT);
+            final double total = price * count;
+            mTotalPrice = mTotalPrice + total;
+        }
         // 添加购物车item布局
         addItemType(ShopCarItemType.SHOP_CAR_ITEM, R.layout.item_shop_car);
     }
@@ -57,6 +67,14 @@ public class ShopCarAdapter extends MultipleRecyclerAdapter {
         this.mIsSelectedAll = isSelectedAll;
     }
 
+
+    public void setICarItemListener(ICarItemListener listener) {
+        this.mICarItemListener = listener;
+    }
+
+    public double getTotalPrice(){
+        return mTotalPrice;
+    }
 
     @Override
     protected void convert(MultipleViewHolder holder, final MultipleItemEntity entity) {
@@ -118,11 +136,72 @@ public class ShopCarAdapter extends MultipleRecyclerAdapter {
                 });
 
 
+                //添加加减事件
+                iconMinus.setOnClickListener(new View.OnClickListener() {
 
+                    @Override
+                    public void onClick(View v) {
+                        final int currentCount = entity.getField(ShopCarItemFields.COUNT);
+                        if (Integer.parseInt(tvCount.getText().toString()) > 1) {
+                            RestClient.builder()
+                                    .url("http://10.0.2.2:8080/latte/shop_car_count.json")
+//                                    .loader(mContext)
+                                    .params("count", currentCount)
+                                    .success(new ISuccess() {
+                                        @Override
+                                        public void onSuccess(String response) {
+                                            int countNum = Integer.parseInt(tvCount.getText().toString());
+                                            countNum--;
+                                            tvCount.setText(String.valueOf(countNum));
+                                            if (mICarItemListener != null) {
+                                                mTotalPrice = mTotalPrice - price;
+                                                final double itemTotal = countNum * price;
+                                                mICarItemListener.onItemClick(itemTotal);
+                                            }
+                                        }
+                                    })
+                                    .build()
+                                    .post();
+                        }
+
+                    }
+                });
+
+                iconPlus.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        final int currentCount = entity.getField(ShopCarItemFields.COUNT);
+                        if (Integer.parseInt(tvCount.getText().toString()) > 1) {
+                            RestClient.builder()
+                                    .url("http://10.0.2.2:8080/latte/shop_car_count.json")
+//                                    .loader(mContext)
+                                    .params("count", currentCount)
+                                    .success(new ISuccess() {
+                                        @Override
+                                        public void onSuccess(String response) {
+                                            int countNum = Integer.parseInt(tvCount.getText().toString());
+                                            countNum++;
+                                            tvCount.setText(String.valueOf(countNum));
+                                            if (mICarItemListener != null) {
+                                                mTotalPrice = mTotalPrice + price;
+                                                final double itemTotal = countNum * price;
+                                                mICarItemListener.onItemClick(itemTotal);
+                                            }
+                                        }
+                                    })
+                                    .build()
+                                    .post();
+                        }
+                    }
+                });
 
 
                 break;
-            default:break;
+            default:
+                break;
         }
     }
+
+
 }
